@@ -1,21 +1,7 @@
 # Define the application directory
-APP_DIR=/home/askador/nure/aUnix/pz1
+APP_DIR=/home/askador/nure/aUnix/pz1/TEST
 APP_FILE=index.js
 GIT_REPO=https://github.com/askador/aUnix-pz1.git
-
-
-if [[ ($1 != "deploy") && ($1 != "undeploy") ]]; then
-    echo $1
-    echo "Invalid argument. Usage: ./deployment.sh [deploy|undeploy]"
-    exit 1
-fi
-
-# Call the appropriate function based on the command-line argument
-if [ $1 = "deploy" ]; then
-  deploy_app
-elif [ $1 = "undeploy" ]; then
-  undeploy_app
-fi
 
 deploy() {
     if [ -d "$APP_DIR/.git" ]; then
@@ -49,3 +35,17 @@ undeploy() {
     stop_app
     rm -rf $APP_DIR
 }
+
+
+if [[ ($1 != "deploy") && ($1 != "undeploy") ]]; then
+    echo $1
+    echo "Invalid argument. Usage: ./deployment.sh [deploy|undeploy]"
+    exit 1
+fi
+
+# Call the appropriate function based on the command-line argument
+if [ $1 = "deploy" ]; then
+  deploy
+elif [ $1 = "undeploy" ]; then
+  undeploy
+fi
