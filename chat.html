@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Чат Федосов ІТШІ-20-4</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Type your message">
+      <button type="submit">Send</button>
+    </form>
+    <script>
+      const messagesList = document.getElementById('messages')
+      const messageForm = document.getElementById('message-form')
+      const messageInput = document.getElementById('message-input')
+      
+      function displayMessage(message) {
+        const li = document.createElement('li')
+        li.textContent = `${message.date} ${message.author}: ${message.text}`
+        messagesList.appendChild(li)
+      }
+      
+      function sendMessage() {
+        const message = {
+          author: 'User',
+          date: new Date(),
+          text: messageInput.value
+        }
+        fetch('/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(message)
+        })
+        .then(response => response.json())
+        .then(data => {
+          displayMessage(data)
+          messageInput.value = ''
+        })
+        .catch(error => console.error(error))
+      }
+      
+      function loadMessages() {
+        fetch('/messages')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(displayMessage)
+        })
+        .catch(error => console.error(error))
+      }
+      
+      messageForm.addEventListener('submit', function (event) {
+        event.preventDefault()
+        sendMessage()
+      })
+      
+      loadMessages()
+    </script>
+  </body>
+</html>
